@@ -57,3 +57,45 @@ body {
   border-radius: 0.4rem;
   padding: 0.6rem 1.5rem;
 }
+
+/* Responsive tweaks */
+@media (max-width: 991px){
+  .profile-photo{ width:150px; height:150px; }
+  .project-card img{ height:170px; }
+  .hero-section{ padding: 4rem 1rem; }
+}
+@media (max-width: 575px){
+  .profile-photo{ width:125px; height:125px; }
+  .project-card img{ height:140px; }
+  .hero-title{ font-size: 1.6rem; }
+}
+
+/*Print-friendly portfolio*/
+@media print{
+  /* Only print main content and make it portfolio-like */
+  body{ 
+  background:#fff; 
+  color:#000; 
+}
+  header, footer, .social-row, .project-card img, .hero-section { 
+  display:none !important; 
+}
+  main{ 
+  display:block; 
+}
+  #about .container { 
+  width:100%; 
+  padding:0; 
+}
+  .about-card { 
+  border:none; 
+  box-shadow:none; 
+}
+  .profile-photo { 
+  width:120px; 
+  height:120px; 
+  border: none; }
+  .contact-form, #projects { 
+    page-break-inside: avoid; 
+  }
+}
