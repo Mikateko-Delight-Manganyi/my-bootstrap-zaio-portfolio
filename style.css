@@ -1,101 +1,356 @@
+/* Google Font Import, Imports the Poppins font family (weights 400, 600, 700) */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+/* CSS Variables (Custom Properties)
+   Defines reusable values for colors, sizes, etc.
+   Makes code easier to maintain and theme. */
+:root {
+   --bg-color: #f9f9f9;             /* Light mode: Overall page background color */
+   --text-color: #333;              /* Light mode: Default text color */
+   --card-bg: #ffffff;              /* Light mode: Background color for cards */
+   --highlight-color: #1e88e5;      /* Accent color (Soft Blue) for headings/labels */
+   --light-gray: #6c757d;           /* Muted text color (like Bootstrap's .text-muted) */
+   --bs-light: #f8f9fa;             /* Bootstrap's standard light background color */
+   --navbar-height: 56px;           /* Height of the fixed Bootstrap navbar */
+}
+
+/* Body & Typography, Sets defaults for the entire page. */
 body {
-  font-family: "Poppins", sans-serif;
-  color: #333;
-  background-color: #f9f9f9;
+    font-family: "Poppins", sans-serif;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    /* padding-top removed */
+    margin: 0; /* Ensures no default browser margin */
 }
 
+/* Accessibility: Skip Link
+   Styles the link allowing keyboard users to bypass navigation.
+   (No skip link in current HTML, but style is kept for reference) */
+.skip-link {
+   position: absolute;           /* Position outside normal document flow */
+   top: -40px;                   /* Hide it off-screen initially */
+   left: 0;
+   background: var(--highlight-color); /* Use accent color for visibility */
+   color: white;                   /* White text */
+   padding: 8px;                   /* Padding around the text */
+   z-index: 100;                   /* Ensure it appears above other elements */
+   transition: top 0.3s ease;      /* Smooth animation when it appears */
+}
+/* When the link receives focus (e.g., via Tab key) */
+.skip-link:focus {
+   top: 0;                         /* Bring it into view */
+}
+
+
+/* Navbar Scroll Margin Fix
+   Prevents section titles from being hidden under the fixed navbar
+   when jumping to sections using anchor links (e.g., #about). */
+section[id] {
+  /* Adds space above the section equal to navbar height + extra padding */
+  scroll-margin-top: calc(var(--navbar-height) + 14px); 
+}
+
+/* Highlight Label (Used in Section Headings)
+   Styles the colored text within section titles with underline and glow. */
 .highlight-label {
-  color: #0078ff;
-  font-weight: 600;
+   color: var(--highlight-color);      /* Apply the defined accent color (blue) */
+   font-weight: 700;                   /* Bold text */
+   text-transform: uppercase;          /* Make text uppercase */
+   letter-spacing: 1px;                /* Add space between letters */
+   text-shadow: 0 0 4px rgba(30, 136, 229, 0.4), /* Blue glow effect */
+                0 0 10px rgba(30, 136, 229, 0.2);
+   transition: text-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease; /* Smooth transitions */
 }
 
-/* Profile Image */
+/* Hover effect for the label (Optional enhancement) */
+.highlight-label:hover {
+   text-shadow: 0 0 8px rgba(30, 136, 229, 0.7),
+                0 0 16px rgba(30, 136, 229, 0.4); /* Intensify glow on hover */
+   transform: scale(1.01);                       /* Slightly enlarge on hover */
+}
+
+/* Keyframes animation for the subtle pulse glow */
+@keyframes glowPulse {
+   0%, 100% { /* Start and end state */
+       text-shadow: 0 0 4px rgba(30, 136, 229, 0.3),
+                    0 0 10px rgba(30, 136, 229, 0.2);
+   }
+   50% { /* Mid-animation state */
+       text-shadow: 0 0 8px rgba(30, 136, 229, 0.6),
+                    0 0 14px rgba(30, 136, 229, 0.3);
+   }
+}
+
+/* -2. Hero Section, Styles the full-screen intro section. */
+.hero-section {
+   position: relative;             /* Positioning context for overlay/content */
+   min-height: calc(100vh - var(--navbar-height)); /* Full screen height below navbar */
+   display: flex;                  /* Use Flexbox for centering */
+   align-items: center;            /* Center content vertically */
+   justify-content: center;         /* Center content horizontally */
+   padding: 0;                     /* Remove default padding */
+   background-image: url('https://images.unsplash.com/photo-1542831371-29b0f74f4291?q=80&w=2070&auto-format&fit=crop'); /* Background image */
+   background-size: cover;         /* Cover the entire area */
+   background-position: center;    /* Center the image */
+   background-attachment: fixed;   /* Parallax effect */
+}
+/* Styles the dark overlay */
+.hero-overlay {
+   position: absolute;             /* Position over the section */
+   top: 0; left: 0;
+   width: 100%; height: 100%;
+   background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
+   z-index: 1;                     /* Above image, below text */
+}
+/* Styles the text container */
+.hero-content {
+   position: relative;             /* Needed for z-index */
+   z-index: 2;                     /* Place text above overlay */
+   text-align: center;             /* Center align text */
+   /* Text color set via Bootstrap class in HTML */
+}
+/* Styles the main hero heading */
+.hero-title {
+   font-size: 2.5rem;              /* Custom font size */
+   font-weight: 700;               /* Bold */
+   color: white;                   /* Explicitly set white color */
+}
+/* Styles the hero subheading */
+.hero-subtitle {
+   font-size: 1.2rem;              /* Custom font size */
+   color: #e0e0e0;                 /* Light gray color */
+}
+
+/* 3. About Section, Styles for the About Me section.*/
+
+/* Custom padding for the About section (smaller than default py-5) */
+.about-section {
+    padding-top: 3rem;              /* Reduced top padding */
+    padding-bottom: 3rem;           /* Reduced bottom padding */
+}
+/* Styles the circular profile picture */
 .profile-picture-actual {
-  width: 220px;
-  height: 220px;
-  object-fit: cover;
-} 
-
-/* Navbar */
-.navbar-brand {
-  font-size: 1.3rem;
-  letter-spacing: 0.5px;
+   width: 180px;                   /* Size of the profile picture */
+   height: 180px;                  /* Keep height same as width for circle */
+   object-fit: cover;              /* Crop image nicely */
+   border-radius: 50%;             /* Makes it a circle */
+   border: 4px solid var(--card-bg); /* Border color matching light backgrounds */
+   box-shadow: 0 0 10px rgba(30, 136, 229, 0.2); /* Subtle blue shadow */
+   /* Centering is handled by text-center on the parent column in HTML */
 }
-
-/* About Section */
+/* Styles paragraphs within the #about section */
 #about p {
-  font-size: 1rem;
-  line-height: 1.7;
+   font-size: 1rem;                /* Standard paragraph size */
+   line-height: 1.7;               /* Increased line spacing */
+}
+/* Styles the skill badges */
+.skills-badge {
+   padding: 0.5em 0.75em;          /* Padding inside */
+   font-size: 0.85rem;             /* Font size */
+   font-weight: 600;               /* Font weight */
+   /* Background colors set via Bootstrap bg-* classes in HTML */
 }
 
-/* Projects */
+/* 4. Projects Section
+   Styles the project cards and grid. */
+.projects-section {
+    /* Padding set via Bootstrap py-5 class in HTML */
+    /* Background set via Bootstrap bg-light class in HTML */
+}
+/* Styles individual project cards */
+.project-card {
+   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075); /* Soft shadow */
+   border: 0;                      /* No border */
+   transition: transform 0.2s ease-in-out; /* Hover animation */
+}
+/* Hover effect for cards */
+.project-card:hover {
+   transform: translateY(-5px);    /* Lift card on hover */
+}
+/* Card title styling */
 .card-title {
-  font-weight: 600;
+   font-weight: 600;               /* Semi-bold */
+}
+/* Card subtitle styling */
+.project-subtitle {
+    color: var(--light-gray);       /* Muted color */
+    margin-bottom: 0.5rem;          /* Space below */
+}
+/* Project image styling */
+.card-img-top {
+   height: 180px;                  /* Consistent image height */
+   object-fit: cover;              /* Crop image */
+}
+/* Card footer styling */
+.project-card-footer {
+   background-color: var(--card-bg); /* Match card background */
+   border-top: none;               /* No line separator */
+   padding: 0.75rem 1rem;          /* Padding */
+}
+/* Button styling in footer */
+.project-card-footer .btn {
+   font-size: 0.9rem;              /* Button text size */
+   padding: 0.5rem 0.9rem;         /* Button padding */
+}
+/* Icon button styling */
+.btn-icon {
+   width: 38px;                    /* Square button */
+   height: 38px;                   
+   display: inline-flex;           /* Center icon */
+   align-items: center;            
+   justify-content: center;         
+   padding: 0;                     
 }
 
-.card-footer .btn {
-  font-size: 0.9rem;
-  padding: 0.5rem 0.9rem;
+/* 5. Contact Section, Styles the contact form and social icons. */
+.contact-section {
+    /* Padding set via Bootstrap py-5 class in HTML */
 }
-
-/* Contact Section */
+/* Social icon link styling */
 #contact .social-icons a {
-  transition: color 0.2s ease;
+   transition: color 0.2s ease;    /* Smooth hover */
+   /* Color, size, margin set via Bootstrap classes in HTML */
 }
-
 #contact .social-icons a:hover {
-  color: #0078ff;
+   color: var(--highlight-color);  /* Change color on hover */
 }
-
+/* Form input styling */
 #contact form .form-control {
-  border-radius: 0.4rem;
-  box-shadow: none;
-  border: 1px solid #ccc;
+   border-radius: 0.4rem;          /* Rounded corners */
+   box-shadow: none;               /* No default shadow */
+   border: 1px solid #ccc;         /* Simple border */
 }
-
+/* Form submit button styling */
 #contact form .btn {
-  border-radius: 0.4rem;
-  padding: 0.6rem 1.5rem;
+   border-radius: 0.4rem;          /* Match input corners */
+   padding: 0.6rem 1.5rem;         /* Button padding */
+   /* Size and color set via Bootstrap classes in HTML */
 }
 
-/* Responsive tweaks */
-@media (max-width: 991px){
-  .profile-photo{ width:150px; height:150px; }
-  .project-card img{ height:170px; }
-  .hero-section{ padding: 4rem 1rem; }
-}
-@media (max-width: 575px){
-  .profile-photo{ width:125px; height:125px; }
-  .project-card img{ height:140px; }
-  .hero-title{ font-size: 1.6rem; }
-}
+/* 6. Footer, Styles applied via Bootstrap classes in HTML. */
+.site-footer { } /* Placeholder for potential custom styles */
+.footer-text { } /* Placeholder */
 
-/*Print-friendly portfolio*/
-@media print{
-  /* Only print main content and make it portfolio-like */
-  body{ 
-  background:#fff; 
-  color:#000; 
+/*Responsive Tweaks,  Adjustments for smaller screen sizes.*/
+/* Medium devices (tablets, less than 992px) */
+@media (max-width: 991px) {
+    .hero-title {
+        font-size: 2.2rem;          /* Smaller hero title */
+    }
+    .hero-subtitle {
+        font-size: 1rem;            /* Smaller hero subtitle */
+    }
+    .profile-picture-actual {
+        width: 160px;               /* Smaller profile picture */
+        height: 160px;
+    }
 }
-  header, footer, .social-row, .project-card img, .hero-section { 
-  display:none !important; 
-}
-  main{ 
-  display:block; 
-}
-  #about .container { 
-  width:100%; 
-  padding:0; 
-}
-  .about-card { 
-  border:none; 
-  box-shadow:none; 
-}
-  .profile-photo { 
-  width:120px; 
-  height:120px; 
-  border: none; }
-  .contact-form, #projects { 
-    page-break-inside: avoid; 
+/* Small devices (landscape phones, less than 768px) */
+@media (max-width: 767px) {
+  .profile-picture-actual { 
+      width: 140px;               /* Even smaller profile picture */
+      height: 140px;
+  }
+  .card-img-top { 
+      height: 160px;              /* Shorter project images */
+  }
+
+ 
+  /* Optional: Center contact details on mobile */
+  #about .text-start {             
+     /* text-align: center !important; */ 
   }
 }
+
+/*Print Styles, Optimizes layout and styles for printing. */
+@media print {
+   body { 
+      background: #fff !important;        /* Force white background */
+      color: #000 !important;             /* Force black text */
+      padding-top: 0 !important;         /* Remove top padding */
+      font-family: sans-serif !important; /* Standard print font */
+      font-size: 10pt;                   /* Standard print size */
+   }
+   /* Hide elements not needed for print */
+   header, footer, .social-icons, .project-card img, 
+   .hero-section, .btn, hr, .navbar-toggler, .skip-link { 
+      display: none !important;          /* !important ensures override */
+   }
+   /* Ensure main content is visible */
+   main { 
+      display: block !important;
+   }
+   /* Adjust section spacing */
+   section {
+      padding-top: 1rem !important;
+      padding-bottom: 1rem !important;
+      page-break-inside: avoid !important; /* Prevent sections splitting */
+   }
+   /* Style links */
+   a {
+      text-decoration: none ; /* Remove underlines */
+      color: #000 ;          /* Make links black */
+   }
+   /* Adjust layout */
+   .container, #about .container { 
+      width: 100% ;         /* Full width */
+      max-width: none;     /* Override max-width */
+      padding: 0 ;          /* Remove padding */
+      margin: 0;
+   }
+   /* Force columns to stack */
+    .row > * {                     
+       width: 100% ; 
+       max-width: 100% ;
+       flex: none ;      
+       padding: 0 15px ; /* Add minimal horizontal padding */
+   }
+   /* Style profile picture */
+   .profile-picture-actual { 
+      width: 100px ;      /* Smaller picture */
+      height: 100px ; 
+      box-shadow: none ;  /* Remove effects */
+      border: none;
+      display: block;    /* Ensure block for centering */
+      margin: 0 auto 1rem auto ; /* Center picture */
+   }
+   /* Ensure text aligns left */
+    #about .text-start { 
+       text-align: left;
+   }
+   /* Style cards */
+   .card {
+      border: 1px solid #ccc ; /* Add simple border */
+      box-shadow: none ;
+      page-break-inside: avoid ;
+      margin-bottom: 1rem;
+   }
+   /* Hide card footers */
+   .card-footer {
+      display: none;
+   }
+   /* Style badges */
+   .badge {
+      border: 1px solid #ccc;
+      background-color: #fff;
+      color: #000 ;
+      padding: 0.3em 0.5em ;
+   }
+   /* Style highlight label */
+   .highlight-label {
+      background-color: transparent;
+      color: #000 ;
+      font-weight: bold;
+      padding: 0 ;
+      text-shadow: none;             /* Remove glow */
+      animation: none ;               /* Remove animation */
+   }
+   /* Hide contact form */
+   #contact form {
+      display: none;
+   }
+}
+/* End of style.css */
+
+
+
